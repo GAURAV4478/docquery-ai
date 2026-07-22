@@ -1,0 +1,7 @@
+cd C:\ragapp
+venv\Scripts\activate
+
+
+
+cd C:\ragapp\backend
+uvicorn main:app --reload
