@@ -66,6 +66,8 @@ pip install -r requirements.txt
 Create `.env` file in `backend/`:
 paste this: 
 GROQ_API_KEY=your_groq_api_key_here
+GEMINI_API_KEY=your_groq_api_key_here
+
 
 Run backend:
 ```bash
