@@ -1,8 +1,4 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-import os
+from langchain_community.embeddings import SentenceTransformerEmbeddings
 
 def get_embeddings():
-    return GoogleGenerativeAIEmbeddings(
-        model="models/embedding-001",
-        google_api_key=os.getenv("GEMINI_API_KEY")
-    )
+    return SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")

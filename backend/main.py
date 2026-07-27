@@ -9,6 +9,8 @@ import shutil
 import os
 import sqlite3
 
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+
 load_dotenv()
 
 app = FastAPI()
