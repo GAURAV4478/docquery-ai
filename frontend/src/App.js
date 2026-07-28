@@ -507,7 +507,7 @@ export default function App() {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch("http://127.0.0.1:8000/upload", { method: "POST", body: formData });
+      const res = await fetch("https://docquery-ai-final.onrender.com/upload", { method: "POST", body: formData });
       const data = await res.json();
       setSessionId(data.session_id);
       setChunks(data.chunks);
@@ -526,7 +526,7 @@ export default function App() {
     setLoading(true);
     setTimeout(() => chatRef.current?.scrollTo({ top: 9999, behavior: "smooth" }), 50);
     try {
-      const res = await fetch("http://127.0.0.1:8000/query", {
+      const res = await fetch("https://docquery-ai-final.onrender.com/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, session_id: sessionId })
@@ -547,7 +547,7 @@ export default function App() {
     const formData = new FormData();
     formData.append("file", sqlFile);
     try {
-      const res = await fetch("http://127.0.0.1:8000/sql/upload", { method: "POST", body: formData });
+      const res = await fetch("https://docquery-ai-final.onrender.com/sql/upload", { method: "POST", body: formData });
       const data = await res.json();
       setSqlSessionId(data.session_id);
       setSqlSchema(data.schema);
@@ -568,7 +568,7 @@ export default function App() {
     setSqlLoading(true);
     setTimeout(() => sqlChatRef.current?.scrollTo({ top: 9999, behavior: "smooth" }), 50);
     try {
-      const res = await fetch("http://127.0.0.1:8000/sql/query", {
+      const res = await fetch("https://docquery-ai-final.onrender.com/sql/query", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, session_id: sqlSessionId })
