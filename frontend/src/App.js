@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import ReactMarkdown from 'react-markdown';
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -10,6 +11,30 @@ const styles = `
     color: #e8e8f0;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
+  }
+
+  .msg-bubble ul, .msg-bubble ol {
+    padding-left: 20px;
+    margin: 6px 0;
+  }
+
+  .msg-bubble li {
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+
+  .msg-bubble p {
+    margin: 6px 0;
+  }
+
+  .msg-bubble strong {
+    color: #c4b8fe;
+  }
+
+  .msg-bubble h1, .msg-bubble h2, .msg-bubble h3 {
+    color: #a89afd;
+    margin: 8px 0 4px;
+    font-size: 14px;
   }
 
   .app { min-height: 100vh; background: #0a0a0f; }
@@ -637,7 +662,7 @@ export default function App() {
                     {messages.map((m, i) => (
                       <div key={i} className={`msg ${m.role}`}>
                         <div className="msg-avatar">{m.role === "user" ? "👤" : "🤖"}</div>
-                        <div className="msg-bubble">{m.text}</div>
+                        <div className="msg-bubble"><ReactMarkdown>{m.text}</ReactMarkdown></div>
                       </div>
                     ))}
                     {loading && (

@@ -13,9 +13,17 @@ def get_answer(question: str, vectorstore):
 
     from langchain_core.messages import SystemMessage, HumanMessage
     messages = [
-        SystemMessage(content="You are a helpful document assistant. Answer questions based only on the provided context. If the answer is not in the context, say 'I could not find this information in the document.' Be concise and accurate."),
-        HumanMessage(content=f"Context:\n{context}\n\nQuestion: {question}")
-    ]
+    SystemMessage(content="""You are a helpful document assistant. Answer questions based only on the provided context from the uploaded document.
+
+Rules:
+- Keep answers short and simple until user explictly ask for detailed explanation
+- Use plain English — no complex jargon or english
+- If listing points, use simple numbered list
+- answer in a systamatic format easy to visually grasp the answer
+- Maximum 5 lines for simple questions
+- If the answer is not in the context, say 'I could not find this information in the document.'"""),
+    HumanMessage(content=f"Context:\n{context}\n\nQuestion: {question}")
+]
 
     response = llm.invoke(messages)
     return response.content
