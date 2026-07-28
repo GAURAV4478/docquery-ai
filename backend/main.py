@@ -15,15 +15,18 @@ load_dotenv()
 
 app = FastAPI()
 
-UPLOAD_FOLDER = "uploads"
-SQL_FOLDER = "sql_uploads"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+SQL_FOLDER = os.path.join(BASE_DIR, "sql_uploads")
+
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(SQL_FOLDER, exist_ok=True)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
