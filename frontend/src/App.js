@@ -509,6 +509,13 @@ export default function App() {
     try {
       const res = await fetch("https://docquery-ai-final.onrender.com/upload", { method: "POST", body: formData });
       const data = await res.json();
+
+      if (data.error) {
+        setMessages([{ role: "ai", text: `❌ ${data.error}` }]);
+        setUploading(false);
+        return;
+      }
+
       setSessionId(data.session_id);
       setChunks(data.chunks);
       setMessages([{ role: "ai", text: `✅ "${data.filename}" processed into ${data.chunks} chunks. Ask me anything!` }]);
