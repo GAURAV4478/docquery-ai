@@ -2,6 +2,10 @@ from langchain_community.vectorstores import Chroma
 from rag.embedder import get_embeddings
 
 def save_to_vectorstore(chunks: list, session_id: str):
+    chunks = [c for c in chunks if c.strip()]
+    if not chunks:
+        raise ValueError("No valid text chunks found in document")
+    
     embeddings = get_embeddings()
     vectorstore = Chroma.from_texts(
         texts=chunks,

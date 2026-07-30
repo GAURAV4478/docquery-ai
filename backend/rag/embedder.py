@@ -3,6 +3,7 @@ import os
 
 def get_embeddings():
     return GoogleGenerativeAIEmbeddings(
-        model="models/gemini-embedding-001",
-        google_api_key=os.getenv("GEMINI_API_KEY")
+        model="models/text-embedding-004",
+        google_api_key=os.getenv("GEMINI_API_KEY"),
+        task_type="retrieval_document"
     )
