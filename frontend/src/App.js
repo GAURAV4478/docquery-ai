@@ -581,7 +581,16 @@ export default function App() {
         body: JSON.stringify({ question: q, session_id: sqlSessionId })
       });
       const data = await res.json();
-      setSqlMessages(m => [...m, { role: "ai", type: "table", sql: data.sql, result: data.result }]);
+      setSqlMessages(m => [...m, {
+  role: "ai",
+  type: "table",
+  sql: data.sql,
+  result: data.result,
+  confidence_score: data.confidence_score,
+  confidence_reason: data.confidence_reason,
+  was_optimized: data.was_optimized,
+  optimization_reason: data.optimization_reason
+}]);
     } catch {
       setSqlMessages(m => [...m, { role: "ai", text: "❌ Query failed.", type: "text" }]);
     }
@@ -772,6 +781,32 @@ export default function App() {
                           {m.type === "table" && m.result?.success ? (
                             <>
                               <div className="sql-badge">{m.sql}</div>
+                              <div style={{ display: "flex", gap: "8px", margin: "8px 24px 0", flexWrap: "wrap" }}>
+  {m.confidence_score !== undefined && (
+    <span style={{
+      fontSize: "11px",
+      padding: "2px 8px",
+      borderRadius: "6px",
+      background: m.confidence_score >= 70 ? "rgba(74,222,128,0.15)" : "rgba(248,113,113,0.15)",
+      color: m.confidence_score >= 70 ? "#4ade80" : "#f87171",
+      border: `1px solid ${m.confidence_score >= 70 ? "rgba(74,222,128,0.3)" : "rgba(248,113,113,0.3)"}`
+    }} title={m.confidence_reason}>
+      Confidence: {m.confidence_score}%
+    </span>
+  )}
+  {m.was_optimized && (
+    <span style={{
+      fontSize: "11px",
+      padding: "2px 8px",
+      borderRadius: "6px",
+      background: "rgba(124,108,252,0.15)",
+      color: "#a89afd",
+      border: "1px solid rgba(124,108,252,0.3)"
+    }} title={m.optimization_reason}>
+      ⚡ Optimized
+    </span>
+  )}
+</div>
                               <div style={{ marginTop: "8px", overflowX: "auto" }}>
                                 <table>
                                   <thead>

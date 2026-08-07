@@ -20,3 +20,7 @@ def load_from_vectorstore(session_id: str):
         persist_directory=f"chroma_db/{session_id}",
         embedding_function=embeddings
     )
+    
+    
+    
+    #ud ud dabang dabang

@@ -3,7 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from utils import extract_text
 from rag.pipeline import process_document, query_document
-from sql_agent import load_database, get_schema, get_table_preview, natural_language_to_sql, run_query
+from sql_agent import (
+    load_database, get_schema, get_table_preview,
+    natural_language_to_sql, run_query,
+    check_sql_confidence, optimize_sql
+)
 from pydantic import BaseModel
 import shutil
 import os
@@ -126,8 +130,24 @@ async def sql_query(request: SQLQueryRequest):
 
         schema = get_schema(conn)
         sql = natural_language_to_sql(request.question, schema)
-        result = run_query(conn, sql)
 
-        return {"sql": sql, "result": result}
+        # Confidence check: does the LLM think this SQL actually answers the question
+        confidence = check_sql_confidence(request.question, schema, sql)
+
+        # Optimizer: checks query plan, rewrites only if it's doing a full table scan
+        optimization = optimize_sql(conn, request.question, schema, sql)
+        final_sql = optimization["final_sql"]
+
+        result = run_query(conn, final_sql)
+
+        return {
+            "sql": final_sql,
+            "original_sql": optimization["original_sql"],
+            "was_optimized": optimization["optimized"],
+            "optimization_reason": optimization["reason"],
+            "confidence_score": confidence["score"],
+            "confidence_reason": confidence["reason"],
+            "result": result
+        }
     except Exception as e:
         return {"error": f"Query failed: {str(e)}"}
